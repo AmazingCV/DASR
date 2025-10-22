@@ -54,7 +54,7 @@ def estimate_blur_kernel(hr_img, lr_img, scale=2):
         predicted = gaussian_decay(sigma, freq_range)
         return np.sum((radial_mean - predicted)**2)
     
-    result = minimize(objective, x0=2.0, bounds=[(0.1, 10.0)])
+    result = minimize(objective, x0=2.0, bounds=[(0.1, 20.0)])  # 扩大上限到20
     estimated_sigma = result.x[0]
     
     # 估计噪声水平
