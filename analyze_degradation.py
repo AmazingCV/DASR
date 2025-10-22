@@ -95,10 +95,39 @@ def analyze_multiple_pairs(hr_dir, lr_dir, num_samples=10):
         print(f"噪声范围: [{np.min(noises):.2f}, {np.max(noises):.2f}]")
         print(f"噪声均值: {np.mean(noises):.2f} ± {np.std(noises):.2f}")
         print("="*50)
-        print("\n建议的训练参数:")
-        print(f"--sig_min={max(0.2, np.min(sigmas)-0.5):.1f}")
-        print(f"--sig_max={min(8.0, np.max(sigmas)+0.5):.1f}")
-        print(f"--noise={np.mean(noises):.1f}")
+        print("\n🎯 建议的完整训练参数:")
+        print("-" * 50)
+        
+        # 基础参数
+        print("# 基础参数")
+        print(f"--scale='2'  # 根据你的HR和LR尺寸比例调整")
+        print(f"--blur_kernel=21  # 通常不需要修改")
+        print()
+        
+        # 模糊类型
+        print("# 模糊类型（根据视觉判断）")
+        print(f"--blur_type='iso_gaussian'  # 如无方向性模糊用这个")
+        print(f"# --blur_type='aniso_gaussian'  # 如有运动模糊用这个")
+        print()
+        
+        # 模糊强度
+        print("# 模糊强度（根据分析结果）")
+        sig_min_suggest = max(0.2, np.min(sigmas) - 0.5)
+        sig_max_suggest = min(8.0, np.max(sigmas) + 0.5)
+        print(f"--sig_min={sig_min_suggest:.1f}")
+        print(f"--sig_max={sig_max_suggest:.1f}")
+        print()
+        
+        # 噪声
+        print("# 噪声水平（根据分析结果）")
+        noise_suggest = np.mean(noises)
+        print(f"--noise={noise_suggest:.1f}")
+        print()
+        
+        # 下采样方式
+        print("# 下采样方式")
+        print(f"--mode='bicubic'  # 通常用这个")
+        print("-" * 50)
         
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
